@@ -15,10 +15,9 @@ namespace HelloDotNetMVC
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                name: "HomeAboutRule",
-                url: "home/about/{id}",
-                defaults: new { controller = "Home", action = "About" },
-                constraints: new { id  = new StevenBossConstraint()}
+                name: "signup",
+                url: "signup",
+                defaults: new { controller = "User", action = "SignUp"}
             );
 
             routes.MapRoute(

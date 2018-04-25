@@ -39,5 +39,12 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    <script>
+        @if (TempData["Message"] != null)
+        {
+            <text>alert('@TempData["Message"]')</text>
+        }
+    </script>
 </body>
 </html>
