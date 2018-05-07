@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HelloDotNetMVC.Parameters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,46 +17,31 @@ namespace HelloDotNetMVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult SignUp(string account, string password)
+        public ActionResult SignUp(UserSignUpParameter parameter)
         {
-            bool Result = false;
-            //帳號密碼都不能為空值
-            if (!string.IsNullOrWhiteSpace(account) &&
-                !string.IsNullOrWhiteSpace(password))
+            if (!ModelState.IsValid)
             {
-                //帳號必須要有@字元
-                //密碼必須大於六個字元
-                if (account.Contains("@") && password.Length > 6)
-                {
-                    //我們判斷是否有註冊過的帳號,因為還沒有連結資料庫
-                    //所以先假定steven@mymail.com被註冊過
-                    if (account != "steven@mymail.com")
-                    {
-                        TempData["Message"] = "註冊成功!!";
-                        Result = true;
-                    }
-                    else
-                    {
-                        TempData["Message"] = "帳號已經存在";
-                    }
-                }
-                else
-                {
-                    TempData["Message"] = "帳號密碼不符合格式";
-                }
-            }
-            else
-            {
-                TempData["Message"] = "帳號密碼不能為空值";
+                //IsValida為False時，表示驗證參數不過
+                //取出第一筆錯誤訊息回傳
+                var Error = ModelState.Values.SelectMany(x => x.Errors).First();
+                TempData["Message"] = Error.ErrorMessage;
+                return RedirectToAction("signup", "user");
             }
 
-            if (Result)
+            //這邊沒有搬到FluentValidation去驗證的原因是
+            //使用者存在與否比較屬於服務層的事情，通常需要讀取資料庫才能判斷
+            //開發上習慣盡量讓驗證參數越乾淨簡單越好，而不是在裡面呼叫很多外部服務(例如資料庫)後做驗證
+            //這會讓職責過於複雜
+            if (parameter.Account != "steven@mymail.com")
             {
+                TempData["Message"] = "註冊成功!!";
                 //註冊成功,導到首頁 
                 return RedirectToAction("index", "home");
+
             }
             else
             {
+                TempData["Message"] = "帳號已經存在";
                 return RedirectToAction("signup", "user");
             }
         }
