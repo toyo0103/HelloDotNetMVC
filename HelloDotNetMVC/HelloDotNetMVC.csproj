@@ -162,6 +162,7 @@
     <Compile Include="OurRouteConstraint\StevenBossConstraint.cs" />
     <Compile Include="Parameters\UserSignUpParameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validators\DataAnnotations\MouseCharactersAttribute.cs" />
     <Compile Include="Validators\UserSignUpParameterValidation.cs" />
   </ItemGroup>
   <ItemGroup>
